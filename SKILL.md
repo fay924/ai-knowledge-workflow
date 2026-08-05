@@ -9,10 +9,10 @@ description: 将 Get笔记中的语音、文字和链接整理到用户自己的
 
 ## 首次运行
 
-1. 运行 `python3 scripts/setup.py status`。
-2. 缺少配置时，完整读取并执行 [references/setup.md](references/setup.md)，一次只引导一个步骤。
-3. 运行 `python3 scripts/setup.py verify`。所有必需检查通过前，不拉取或写入。
-4. `verify` 只检查本机配置是否齐全；必须实际读取 Notion 根页面和 Notes schema，不能把配置存在误判为连接成功。
+1. 完整读取并执行 [references/setup.md](references/setup.md)，默认使用 Notion MCP 与 Get笔记 MCP 的 OAuth 授权，不先要求 API Key 或终端操作。
+2. 检查当前 AI 工具是否已有 Notion 与 Get笔记能力；已有时直接发起授权和真实读取测试。
+3. 缺少连接时，由 AI 自己完成能自动完成的安装；只把必须点击的登录或授权步骤交给用户。
+4. 只有当前工具不支持 MCP 或 OAuth 时，才启用脚本/API 备用路径。
 5. 从用户复制后的产品根页面动态发现数据库，遵循 [references/notion-contract.md](references/notion-contract.md)。
 6. 默认设置“从现在开始”的同步基线。
 7. 用一条新笔记完成 Capture 写入和 Daily Echo 回响，全部通过后才宣布安装完成。

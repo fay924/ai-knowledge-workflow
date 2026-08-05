@@ -2,7 +2,7 @@
 
 ## 拉取路径
 
-1. 运行 `python3 scripts/fetch_notes.py --record-seen`，仅拉取预览并登记待处理状态。
+1. 优先使用已授权的 Get笔记 MCP 拉取新增笔记；MCP 不可用时才运行 `python3 scripts/fetch_notes.py --record-seen`。仅拉取预览并登记待处理状态。
 2. 查询现有 Projects、Areas、Resources，判断最小有用关联。
 3. 展示标题、摘要、建议位置和理由。
 4. 等待用户确认；确认项标记为 `confirmed`，拒绝项标记为 `skipped`。
