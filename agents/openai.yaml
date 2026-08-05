@@ -1,0 +1,4 @@
+interface:
+  display_name: "Capture to Notion"
+  short_description: "把 Get笔记内容整理并写入 Notion PARA 系统"
+  default_prompt: "使用 $capture-to-notion 引导我完成配置，然后把新内容整理并写入我的 Notion PARA 系统。"
