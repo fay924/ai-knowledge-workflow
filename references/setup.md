@@ -15,6 +15,11 @@
 
 优先使用当前 AI 工具自带的 Notion 登录授权。让用户在浏览器完成登录，不要求其把 Token 发到对话中。
 
+官方说明：
+
+- API 连接：https://www.notion.com/help/create-integrations-with-the-notion-api
+- 把连接添加到指定页面：https://www.notion.com/help/add-and-manage-connections-with-the-api
+
 授权完成后运行 `python3 scripts/setup.py set-notion-connector`，再由 AI 实际读取产品根页面、Notes schema，并执行一次测试读取。只有真实读取成功才算授权通过；`setup.py status` 不能替代连通性验证。
 
 如果当前工具不支持 Notion 登录授权：
@@ -28,7 +33,9 @@
 
 ## 3. 授权 Get笔记
 
-打开 https://www.biji.com 并登录。
+打开 https://www.biji.com/openapi 并登录，在开放平台创建应用。至少授予 `note.content.read`，复制 API Key 和 Client ID。
+
+官方文档：https://doc.biji.com/docs/WOxgwObNNiyMHWk1dl0cJqSxnEd
 
 如果当前 AI 工具已经提供 Get笔记的 `/note config` 或等价授权入口，优先使用该入口。
 
@@ -41,6 +48,10 @@ python3 scripts/setup.py set-getnote
 向导会分别隐藏读取 API Key 和 Client ID。若用户账户没有 API 凭证入口，停止并说明需要向 Get笔记官方确认开放接口权限；不得编造入口。
 
 验证：调用笔记列表接口成功，且不输出凭证。
+
+```bash
+python3 scripts/fetch_notes.py --max-pages 1
+```
 
 ## 4. 发现 Notion 结构
 

@@ -7,6 +7,7 @@ import os
 import re
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 from datetime import datetime
 from pathlib import Path
@@ -101,16 +102,19 @@ def entry(note, preview_chars=None):
 
 def fetch_list(since_date, max_pages):
     notes = []
-    cursor = 0
+    cursor = None
     for _ in range(max_pages):
-        data = api_get(f"/open/api/v1/resource/note/list?since_id={cursor}").get("data", {})
+        path = "/open/api/v1/resource/note/list"
+        if cursor:
+            path += f"?cursor={urllib.parse.quote(str(cursor))}"
+        data = api_get(path).get("data", {})
         batch = data.get("notes") or []
         if not batch:
             break
         notes.extend(batch)
-        if not data.get("has_more") or not data.get("next_cursor"):
+        if not data.get("has_more") or not data.get("cursor"):
             break
-        cursor = data["next_cursor"]
+        cursor = data["cursor"]
     if not since_date:
         return notes
     threshold = parse_datetime(since_date)
