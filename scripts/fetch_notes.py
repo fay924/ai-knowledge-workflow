@@ -15,7 +15,13 @@ from state import ingest_notes, read_seen
 
 
 BASE_URL = "https://openapi.biji.com"
-CONFIG_FILE = Path(os.environ.get("CAPTURE_CONFIG_DIR", Path.home() / ".config" / "capture-to-notion")) / "config.json"
+CONFIG_DIR = Path(
+    os.environ.get(
+        "AI_KNOWLEDGE_CONFIG_DIR",
+        os.environ.get("CAPTURE_CONFIG_DIR", Path.home() / ".config" / "ai-knowledge-workflow"),
+    )
+)
+CONFIG_FILE = CONFIG_DIR / "config.json"
 AUDIO_TYPES = {"audio", "meeting", "local_audio", "recorder_audio", "internal_record"}
 
 
@@ -144,4 +150,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

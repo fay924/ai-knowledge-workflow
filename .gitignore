@@ -5,5 +5,5 @@ __pycache__/
 .env.*
 config.json
 state.json
+echo-state.json
 *.log
-

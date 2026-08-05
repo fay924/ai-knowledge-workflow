@@ -9,11 +9,13 @@
 3. 打开复制后的产品根页面。
 4. 复制该页面链接。
 
-询问用户产品根页面链接。读取页面后，按 `notion-contract.md` 检查四个数据库。
+询问用户产品根页面链接。读取页面后，按 `notion-contract.md` 检查四个必需数据库，并记录可选数据库。
 
 ## 2. 授权 Notion
 
 优先使用当前 AI 工具自带的 Notion 登录授权。让用户在浏览器完成登录，不要求其把 Token 发到对话中。
+
+授权完成后运行 `python3 scripts/setup.py set-notion-connector`，再由 AI 实际读取产品根页面、Notes schema，并执行一次测试读取。只有真实读取成功才算授权通过；`setup.py status` 不能替代连通性验证。
 
 如果当前工具不支持 Notion 登录授权：
 
@@ -64,6 +66,8 @@ python3 scripts/state.py baseline
 2. 拉取新笔记。
 3. 展示整理结果，等用户确认。
 4. 写入 Notes；无法判断 PARA 时不设置关联。
-5. 请用户在 Command Center 确认可见。
+5. 将新页面登记到 `echo_state.py`，自动执行一次每日回响。
+6. 有真实连接时说明原因；没有连接时明确显示“暂无强碰撞”。
+7. 请用户在 Command Center 确认可见。
 
 测试通过后，才提示可以设置每日定时检查。
