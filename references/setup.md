@@ -48,7 +48,17 @@ python3 scripts/setup.py set-getnote
 python3 scripts/setup.py set-notion-map --root-page PAGE_ID --notes DATA_SOURCE_ID --projects DATA_SOURCE_ID --areas DATA_SOURCE_ID --resources DATA_SOURCE_ID
 ```
 
-## 5. 首条笔记验收
+## 5. 设置首次同步范围
+
+默认只处理安装完成后的新内容：
+
+```bash
+python3 scripts/state.py baseline
+```
+
+如果用户明确要求导入历史，跳过该命令，并先说明首次会出现较多待确认内容。
+
+## 6. 首条笔记验收
 
 1. 用户在 Get笔记新建内容：“这是我的第一条 AI 第二大脑测试笔记。”
 2. 拉取新笔记。
@@ -57,4 +67,3 @@ python3 scripts/setup.py set-notion-map --root-page PAGE_ID --notes DATA_SOURCE_
 5. 请用户在 Command Center 确认可见。
 
 测试通过后，才提示可以设置每日定时检查。
-

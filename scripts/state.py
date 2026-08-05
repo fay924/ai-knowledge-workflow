@@ -42,6 +42,15 @@ def read_seen():
     return state.get("last_seen") or state.get("last_capture")
 
 
+def set_baseline(timestamp=None):
+    """Start future retrieval at now, without treating older notes as processed."""
+    state = load_state()
+    state["last_seen"] = timestamp or utc_now()
+    state.setdefault("pending_notes", {})
+    save_state(state)
+    return state["last_seen"]
+
+
 def ingest_notes(notes, last_seen=None):
     state = load_state()
     queue = state.setdefault("pending_notes", {})
@@ -85,9 +94,10 @@ if __name__ == "__main__":
     command = sys.argv[1] if len(sys.argv) > 1 else ""
     if command == "seen":
         print(read_seen() or "NONE")
+    elif command == "baseline":
+        print(set_baseline(sys.argv[2] if len(sys.argv) > 2 else None))
     elif command == "mark" and len(sys.argv) >= 4:
         print(json.dumps(mark_notes(sys.argv[3:], sys.argv[2]), ensure_ascii=False))
     else:
-        print(f"Usage: {sys.argv[0]} seen|mark STATUS ID...", file=sys.stderr)
+        print(f"Usage: {sys.argv[0]} seen|baseline [timestamp]|mark STATUS ID...", file=sys.stderr)
         sys.exit(1)
-

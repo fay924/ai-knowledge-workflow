@@ -14,7 +14,8 @@ description: 将 Get笔记中的语音、文字和链接整理后写入用户自
 3. 运行 `python3 scripts/setup.py verify`。所有检查通过前，不拉取或写入。
 4. 用 Notion 能力读取用户复制后的产品根页面，按 [references/notion-contract.md](references/notion-contract.md) 动态发现数据库和模板。
 5. 将发现结果写入本机配置；不得把数据库 ID 写回 Skill。
-6. 引导用户输入一条测试笔记，完整跑通后才宣布安装完成。
+6. 询问用户从现在开始还是导入历史。默认运行 `python3 scripts/state.py baseline`，只处理安装后的新内容。
+7. 引导用户输入一条测试笔记，完整跑通后才宣布安装完成。
 
 禁止在对话、日志、错误信息中回显完整密钥。禁止要求用户把密钥提交到 GitHub。
 
@@ -61,4 +62,3 @@ Notes 是内容主体。PARA 是关联位置，不把一条笔记复制到多个
 - 内容写入复制后的 Notes 数据库。
 - Command Center 能看到该笔记。
 - Project、Area 或 Resource 关联符合用户预期；无法判断时保持未关联。
-
