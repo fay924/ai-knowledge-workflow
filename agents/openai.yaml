@@ -1,4 +1,4 @@
 interface:
-  display_name: "Capture to Notion"
-  short_description: "把 Get笔记内容整理并写入 Notion PARA 系统"
-  default_prompt: "使用 $capture-to-notion 引导我完成配置，然后把新内容整理并写入我的 Notion PARA 系统。"
+  display_name: "AI 知识工作流"
+  short_description: "把新内容沉淀到 Notion，并连接历史知识形成每日回响"
+  default_prompt: "使用 $ai-knowledge-workflow 整理我的新笔记，写入 Notion，并完成一次每日回响。"

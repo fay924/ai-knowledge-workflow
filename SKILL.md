@@ -1,64 +1,45 @@
 ---
-name: capture-to-notion
-description: 将 Get笔记中的语音、文字和链接整理后写入用户自己的 Notion 极简 PARA 系统。用于首次安装、检查授权、拉取新笔记、确认分类、写入 Notes，以及排查同步失败。
+name: ai-knowledge-workflow
+description: 将 Get笔记中的语音、文字和链接整理到用户自己的 Notion PARA 系统，并在写入后自动执行每日回响，连接历史笔记、项目与可选知识库。用于首次安装、授权配置、拉取或记录笔记、确认分类、写入 Notion、寻找新旧内容关联、提出行动建议，以及排查同步或回响失败。
 ---
 
-# Capture to Notion
+# AI Knowledge Workflow
 
-帮助新手完成一条可验证路径：Get笔记输入，AI 整理，Notion Notes 沉淀。
+只向用户呈现一个完整系统：记录 → 整理 → 沉淀 → 回响。Capture 与 Daily Echo 是内部模块，不要求用户分别安装。
 
 ## 首次运行
 
-1. 运行 `python3 scripts/setup.py status`。
-2. 缺少配置时，读取并执行 [references/setup.md](references/setup.md)。一次只引导一个步骤。
-3. 运行 `python3 scripts/setup.py verify`。所有检查通过前，不拉取或写入。
-4. 用 Notion 能力读取用户复制后的产品根页面，按 [references/notion-contract.md](references/notion-contract.md) 动态发现数据库和模板。
-5. 将发现结果写入本机配置；不得把数据库 ID 写回 Skill。
-6. 询问用户从现在开始还是导入历史。默认运行 `python3 scripts/state.py baseline`，只处理安装后的新内容。
-7. 引导用户输入一条测试笔记，完整跑通后才宣布安装完成。
+1. 完整读取并执行 [references/setup.md](references/setup.md)。Notion 默认使用官方 MCP OAuth；得到大脑按当前 AI 工具选择官方 Skill 或个人开发凭证接入，不假定存在个人 OAuth。
+2. 检查当前 AI 工具是否已有 Notion 与 Get笔记能力；已有时直接发起授权和真实读取测试。
+3. 缺少连接时，由 AI 自己完成能自动完成的安装；只把必须点击的登录或授权步骤交给用户。
+4. 得到大脑个人开发需要用户在官方开放平台创建应用并取得 Client ID 与 API Key；由 AI 完成配置，用户不编辑代码或配置文件。
+5. 从用户复制后的产品根页面动态发现数据库，遵循 [references/notion-contract.md](references/notion-contract.md)。
+6. 默认设置“从现在开始”的同步基线。
+7. 用一条新笔记完成 Capture 写入和 Daily Echo 回响，全部通过后才宣布安装完成。
 
-禁止在对话、日志、错误信息中回显完整密钥。禁止要求用户把密钥提交到 GitHub。
+禁止在对话、日志、错误信息或仓库中回显完整密钥、数据库 ID、本机路径和用户笔记。
 
-## 日常流程
+WorkBuddy 5.3.8 的项目技能入口只支持本地上传或技能中心，不能把任意 GitHub 地址当作安装入口。仅安装得到大脑官方 ClawHub Skill，只代表得到大脑连接成功，不代表完整工作流已安装。完整版本默认使用 Codex；发布 WorkBuddy 安装包或上架 SkillHub 并完成 Notion 实测后，才能把 WorkBuddy 标为完整支持。
 
-1. 运行 `python3 scripts/fetch_notes.py --record-seen` 拉取预览。
-2. 查询现有 Projects、Areas、Resources，再判断最小关联。
-3. 展示标题、摘要、建议位置和理由。
-4. 等用户确认。
-5. 对确认项运行 `python3 scripts/fetch_notes.py --detail NOTE_ID`。
-6. 写入 Notes，并按需关联一个 Project、Area 或 Resource。
-7. 写入成功后运行 `python3 scripts/state.py mark written NOTE_ID`。
+## 日常入口
 
-不得自动创建 Project、Area 或 Resource。需要新容器时，先单独确认。
+- 用户要求拉取、同步、整理、记录或写入笔记：完整读取并执行 [references/capture.md](references/capture.md)。
+- Capture 成功写入后：自动完整读取并执行 [references/daily-echo.md](references/daily-echo.md)，无需用户再次提醒。
+- 用户单独要求“回响”“碰撞笔记”“寻找关联”或“回看新旧笔记”：直接执行 Daily Echo 模块。
 
-## 极简分类
+## 全局边界
 
-- Project：有明确结果，完成后结束。
-- Area：需要长期负责，没有结束日期。
-- Resource：以后会反复查阅的稳定主题。
-- 无法判断：只写入 Notes，不设置关联。
-
-Notes 是内容主体。PARA 是关联位置，不把一条笔记复制到多个数据库。
-
-## 正文规则
-
-- 默认使用 Get笔记智能改写内容，适度分段，不压缩成一句话。
-- 保留原始链接、来源和关键细节。
-- 不读取录音原始转写或网页全文，除非用户明确要求。
-- 多个主题混在一条笔记时，先展示拆分方案。
-- 写入字段必须符合 [references/notion-contract.md](references/notion-contract.md)。
-
-## 定时运行
-
-定时任务只拉取、分析并通知，不自动写入。用户确认后再写入 Notion。
+- Capture 写入前必须获得用户确认。
+- Daily Echo 默认只读分析；修改旧页面、创建任务或建立关系前必须再次确认。
+- 不自动创建 Area、Resource 或 Project。
+- 没有真实连接时明确输出“暂无强碰撞”，不得强行联想。
+- 回响失败不回滚已经成功写入的笔记；保留错误状态供下次重试。
 
 ## 完成标准
 
-只有同时满足以下条件，才算交付完成：
-
-- 用户在 Get笔记创建了一条新的语音、文字或链接笔记。
-- Skill 成功拉取该内容。
-- 用户确认 AI 给出的整理结果。
-- 内容写入复制后的 Notes 数据库。
-- Command Center 能看到该笔记。
-- Project、Area 或 Resource 关联符合用户预期；无法判断时保持未关联。
+- 能读取用户安装后新增的一条 Get笔记。
+- 能展示整理结果和建议位置，并等待用户确认。
+- 能把确认内容写入用户复制后的 Notes 数据库。
+- 能自动登记并执行一次每日回响。
+- 有真实连接时说明原因；没有连接时明确显示“暂无强碰撞”。
+- 用户能在 Notion 中找到笔记，并能独立重复完成第二次。

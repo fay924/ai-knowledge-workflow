@@ -8,7 +8,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
-CONFIG_DIR = Path(os.environ.get("CAPTURE_CONFIG_DIR", Path.home() / ".config" / "capture-to-notion"))
+CONFIG_DIR = Path(
+    os.environ.get(
+        "AI_KNOWLEDGE_CONFIG_DIR",
+        os.environ.get("CAPTURE_CONFIG_DIR", Path.home() / ".config" / "ai-knowledge-workflow"),
+    )
+)
 STATE_FILE = CONFIG_DIR / "state.json"
 FINAL_STATUSES = {"written", "skipped"}
 VALID_STATUSES = {"new", "shown", "confirmed", "written", "skipped"}
@@ -90,6 +95,18 @@ def mark_notes(note_ids, status):
     return changed
 
 
+def commit_checkpoint():
+    state = load_state()
+    pending = state.get("pending_notes", {})
+    unfinished = [note_id for note_id, item in pending.items() if item.get("status") not in FINAL_STATUSES]
+    if unfinished:
+        raise ValueError(f"cannot commit checkpoint; unfinished notes: {', '.join(unfinished)}")
+    if state.get("last_seen"):
+        state["last_capture"] = state["last_seen"]
+    save_state(state)
+    return state.get("last_capture")
+
+
 if __name__ == "__main__":
     command = sys.argv[1] if len(sys.argv) > 1 else ""
     if command == "seen":
@@ -98,6 +115,12 @@ if __name__ == "__main__":
         print(set_baseline(sys.argv[2] if len(sys.argv) > 2 else None))
     elif command == "mark" and len(sys.argv) >= 4:
         print(json.dumps(mark_notes(sys.argv[3:], sys.argv[2]), ensure_ascii=False))
+    elif command == "commit":
+        try:
+            print(commit_checkpoint() or "NONE")
+        except ValueError as exc:
+            print(str(exc), file=sys.stderr)
+            sys.exit(1)
     else:
-        print(f"Usage: {sys.argv[0]} seen|baseline [timestamp]|mark STATUS ID...", file=sys.stderr)
+        print(f"Usage: {sys.argv[0]} seen|baseline [timestamp]|mark STATUS ID...|commit", file=sys.stderr)
         sys.exit(1)
