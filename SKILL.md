@@ -9,15 +9,17 @@ description: 将 Get笔记中的语音、文字和链接整理到用户自己的
 
 ## 首次运行
 
-1. 完整读取并执行 [references/setup.md](references/setup.md)，默认使用 Notion MCP 与 Get笔记 MCP 的 OAuth 授权，不先要求 API Key 或终端操作。
+1. 完整读取并执行 [references/setup.md](references/setup.md)。Notion 默认使用官方 MCP OAuth；得到大脑按当前 AI 工具选择官方 Skill 或个人开发凭证接入，不假定存在个人 OAuth。
 2. 检查当前 AI 工具是否已有 Notion 与 Get笔记能力；已有时直接发起授权和真实读取测试。
 3. 缺少连接时，由 AI 自己完成能自动完成的安装；只把必须点击的登录或授权步骤交给用户。
-4. 只有当前工具不支持 MCP 或 OAuth 时，才启用脚本/API 备用路径。
+4. 得到大脑个人开发需要用户在官方开放平台创建应用并取得 Client ID 与 API Key；由 AI 完成配置，用户不编辑代码或配置文件。
 5. 从用户复制后的产品根页面动态发现数据库，遵循 [references/notion-contract.md](references/notion-contract.md)。
 6. 默认设置“从现在开始”的同步基线。
 7. 用一条新笔记完成 Capture 写入和 Daily Echo 回响，全部通过后才宣布安装完成。
 
 禁止在对话、日志、错误信息或仓库中回显完整密钥、数据库 ID、本机路径和用户笔记。
+
+WorkBuddy 只有在同时支持 GitHub Skill 与 Notion MCP 时才能运行完整系统。仅安装得到大脑官方 ClawHub Skill，只代表得到大脑连接成功，不代表完整工作流已安装。
 
 ## 日常入口
 

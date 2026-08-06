@@ -43,9 +43,12 @@ def status():
     notion = data.get("notion", {})
     getnote = data.get("getnote", {})
     mapping = notion.get("mapping", {})
+    getnote_credentials = bool(
+        (getnote.get("api_key") or os.environ.get("GETNOTE_API_KEY"))
+        and (getnote.get("client_id") or os.environ.get("GETNOTE_CLIENT_ID"))
+    )
     result = {
-        "getnote_api_key": masked(getnote.get("api_key") or os.environ.get("GETNOTE_API_KEY")),
-        "getnote_client_id": masked(getnote.get("client_id") or os.environ.get("GETNOTE_CLIENT_ID")),
+        "getnote_access": masked(getnote.get("connector") or getnote_credentials),
         "notion_access": masked(notion.get("token") or os.environ.get("NOTION_TOKEN") or notion.get("connector")),
         "notion_root_page": masked(notion.get("root_page_id")),
         "notion_database_map": "configured" if all(mapping.get(k) for k in ("notes", "projects", "areas", "resources")) else "missing",
@@ -84,6 +87,13 @@ def set_notion_connector():
     print("已记录使用宿主 AI 的 Notion 连接器；仍需由 AI 实际读取根页面并验证权限。")
 
 
+def set_getnote_connector():
+    data = load_config()
+    data.setdefault("getnote", {})["connector"] = True
+    save_config(data)
+    print("已记录使用宿主 AI 的得到大脑连接器；仍需由 AI 实际读取最近一条笔记验证权限。")
+
+
 def set_notion_map(args):
     data = load_config()
     notion = data.setdefault("notion", {})
@@ -116,6 +126,7 @@ def main():
     sub.add_parser("set-getnote")
     sub.add_parser("set-notion-token")
     sub.add_parser("set-notion-connector")
+    sub.add_parser("set-getnote-connector")
     notion_map = sub.add_parser("set-notion-map")
     notion_map.add_argument("--root-page", required=True)
     notion_map.add_argument("--notes", required=True)
@@ -135,6 +146,8 @@ def main():
             set_notion_token()
         elif args.command == "set-notion-connector":
             set_notion_connector()
+        elif args.command == "set-getnote-connector":
+            set_getnote_connector()
         elif args.command == "set-notion-map":
             set_notion_map(args)
     except (OSError, ValueError) as exc:
