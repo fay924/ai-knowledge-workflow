@@ -19,7 +19,7 @@ description: 将 Get笔记中的语音、文字和链接整理到用户自己的
 
 禁止在对话、日志、错误信息或仓库中回显完整密钥、数据库 ID、本机路径和用户笔记。
 
-WorkBuddy 只有在同时支持 GitHub Skill 与 Notion MCP 时才能运行完整系统。仅安装得到大脑官方 ClawHub Skill，只代表得到大脑连接成功，不代表完整工作流已安装。
+WorkBuddy 5.3.8 的项目技能入口只支持本地上传或技能中心，不能把任意 GitHub 地址当作安装入口。仅安装得到大脑官方 ClawHub Skill，只代表得到大脑连接成功，不代表完整工作流已安装。完整版本默认使用 Codex；发布 WorkBuddy 安装包或上架 SkillHub 并完成 Notion 实测后，才能把 WorkBuddy 标为完整支持。
 
 ## 日常入口
 

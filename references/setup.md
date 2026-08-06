@@ -6,7 +6,7 @@
 
 ## 统一安装提示词
 
-将下面整段交给 Codex 或 WorkBuddy。用户只替换 Notion 根页面链接；仓库公开后，Skill 地址无需修改。
+将下面整段交给 Codex。用户只替换 Notion 根页面链接；仓库公开后，Skill 地址无需修改。
 
 > 请作为安装向导，按顺序帮我完成 AI 知识工作流安装。每次只处理一个步骤，验证成功后再进入下一步；你能自动完成的操作直接完成，需要我登录、授权或复制凭证时，再用简单中文告诉我具体点击位置。第一，连接官方 Notion MCP，并读取我的产品根页面与 Notes 数据库验证读写权限：［Notion 产品根页面链接］。第二，连接得到大脑：打开 https://www.biji.com/openapi，引导我创建“个人开发”应用并取得 Client ID，再创建 API Key；使用官方包 @getnote/mcp 完成配置。凭证只用于本机配置，不要回显，不要写入文档或 GitHub。连接后读取最近一条笔记验证。第三，从 https://github.com/fay924/ai-knowledge-workflow 安装完整的“AI 知识工作流”Skill，它内部包含 Capture 和 Daily Echo，不要分开安装。最后带我新建并同步一条测试笔记，确认它写入预期 Notion 位置，并完成一次 Daily Echo。任何一步失败时先说明原因和下一步，不要跳过验证。
 
@@ -87,13 +87,15 @@ python3 scripts/fetch_notes.py --max-pages 1
 
 ## WorkBuddy 完整系统边界
 
-公开交付前必须验证 WorkBuddy 是否同时支持：
+WorkBuddy 5.3.8 的项目技能入口只支持“本地上传”或“技能中心”，没有任意 GitHub 地址安装入口。当前只能把 WorkBuddy 作为得到大脑极简入口。
 
-- 从 GitHub 安装本 Skill。
+完整支持前还必须完成：
+
+- 把本 Skill 打包为 WorkBuddy 可上传的本地安装包，或发布到 SkillHub。
 - 连接官方 Notion MCP，并读写用户复制后的数据库。
 - 在写入后继续执行 Daily Echo。
 
-任一项不支持时，只把 WorkBuddy 标注为“得到大脑极简入口”，完整系统推荐使用 Codex。禁止把只安装得到大脑 Skill 描述成整套系统安装完成。
+以上验证完成前，完整系统使用 Codex。禁止把只安装得到大脑 Skill 描述成整套系统安装完成，也不要让用户把 GitHub 地址直接发给 WorkBuddy 安装。
 
 ## 4. 发现 Notion 结构
 
